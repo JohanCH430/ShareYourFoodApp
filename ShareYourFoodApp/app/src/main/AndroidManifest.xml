@@ -2,11 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.shareyourfoodapp">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
 
     <application
         android:allowBackup="true"
@@ -15,36 +14,44 @@
         android:roundIcon="@mipmap/icon_app"
         android:supportsRtl="true"
         android:theme="@style/Theme.ShareYourFoodApp">
-		
         <activity
             android:name=".view.Splash"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
             android:noHistory="true"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".view.SignIn"
-            android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"
+            android:label="@string/title_sign_in"
             android:screenOrientation="portrait"
-            android:label="@string/title_sign_in"/>
-
+            android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar" />
         <activity
             android:name=".view.SignUp"
-            android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"
+            android:label="@string/title_sign_up"
             android:screenOrientation="portrait"
-            android:label="@string/title_sign_up"/>
-
+            android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar" />
         <activity
             android:name=".view.MainActivity"
-            android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"
-            android:screenOrientation="portrait">
-        </activity>
-		
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+        <activity
+            android:name=".view.MyAccount"
+            android:label="@string/my_account"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar" />
+        <activity
+            android:name=".view.Favorites"
+            android:label="@string/favorites"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar" />
+        <activity android:name=".view.RecipeDetail"
+            android:label="@string/RecipeDetail"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar" />
     </application>
 
 </manifest>

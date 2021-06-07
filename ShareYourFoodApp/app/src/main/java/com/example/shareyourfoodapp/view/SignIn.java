@@ -83,9 +83,9 @@ public class SignIn extends AppCompatActivity {
             dialog.dismiss();
             if (ex == null) {
                 if(login){
-                    //MenuPrincipal
-                    //startActivity(new Intent(SignIn.this, SignUp.class));
-                    System.out.println("Datos correctos");
+                    Intent i = new Intent(SignIn.this, MainActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(i);
                 }
                 else{
                     mPassword.setError("Datos incorrectos");
@@ -94,11 +94,6 @@ public class SignIn extends AppCompatActivity {
             else
                 Toast.makeText(SignIn.this, "Ha ocurrido un error...", Toast.LENGTH_SHORT).show();
         }
-
-        /*@Override
-        protected void onCancelled() {
-            dialog.dismiss();
-        }*/
     }
 
 

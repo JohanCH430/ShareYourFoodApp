@@ -6,4 +6,9 @@
     <string name="name">Nombre</string>
     <string name="password">Contraseña</string>
     <string name="repeat_password">Repetir Contraseña</string>
+    <string name="navigation_drawer_open">Abrir menú</string>
+    <string name="navigation_drawer_close">Cerrar menú</string>
+    <string name="my_account">Mi cuenta</string>
+    <string name="favorites">Favoritos</string>
+    <string name="RecipeDetail">Receta</string>
 </resources>
