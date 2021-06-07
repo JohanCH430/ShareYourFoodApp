@@ -3,6 +3,7 @@
     <string name="title_sign_in">Iniciar sesión</string>
     <string name="title_sign_up">Registro</string>
     <string name="email">Correo electrónico</string>
+    <string name="name">Nombre</string>
     <string name="password">Contraseña</string>
     <string name="repeat_password">Repetir Contraseña</string>
 </resources>

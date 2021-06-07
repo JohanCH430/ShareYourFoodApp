@@ -8,35 +8,48 @@
     tools:context=".view.SignUp">
 
     <EditText
-        android:id="@+id/password"
+        android:id="@+id/txtEmail"
+        android:layout_width="162dp"
+        android:layout_height="45dp"
+        android:ems="10"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress"
+        android:textColorHint="@color/black"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"/>
+
+    <EditText
+        android:id="@+id/txtName"
+        android:layout_width="162dp"
+        android:layout_height="45dp"
+        android:ems="10"
+        android:hint="@string/name"
+        android:inputType="text"
+        android:textColorHint="@color/black"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/txtEmail"/>
+
+    <EditText
+        android:id="@+id/txtPassword"
         android:layout_width="162dp"
         android:layout_height="45dp"
         android:ems="10"
         android:hint="@string/password"
         android:inputType="textPassword"
         android:textColorHint="@color/black"
-        android:layout_centerInParent="true"/>
-
-    <EditText
-        android:id="@+id/email"
-        android:layout_width="162dp"
-        android:layout_height="45dp"
-        android:ems="10"
-        android:hint="@string/email"
-        android:inputType="textEmailAddress"
-        android:layout_above="@+id/password"
-        android:textColorHint="@color/black"
+        android:layout_below="@+id/txtEmail"
         android:layout_centerHorizontal="true"/>
 
+
     <EditText
-        android:id="@+id/repeatPassword"
+        android:id="@+id/txtRepeatPassword"
         android:layout_width="162dp"
         android:layout_height="45dp"
         android:ems="10"
         android:hint="@string/repeat_password"
         android:inputType="textPassword"
         android:textColorHint="@color/black"
-        android:layout_below="@+id/password"
+        android:layout_below="@+id/txtPassword"
         android:layout_centerInParent="true"/>
 
     <TextView
@@ -47,7 +60,7 @@
         android:textColor="@color/black"
         android:textSize="36sp"
         android:layout_centerHorizontal="true"
-        android:layout_above="@+id/email"
+        android:layout_above="@+id/txtEmail"
         android:layout_marginBottom="100dp"/>
 
     <Button
@@ -55,7 +68,7 @@
         android:layout_width="162dp"
         android:layout_height="wrap_content"
         android:text="Registrarme"
-        android:layout_below="@+id/repeatPassword"
+        android:layout_below="@+id/txtRepeatPassword"
         android:layout_centerInParent="true"
         android:layout_marginTop="50dp"/>
 
