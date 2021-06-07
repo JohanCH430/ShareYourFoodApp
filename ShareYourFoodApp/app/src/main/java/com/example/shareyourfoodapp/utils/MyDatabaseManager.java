@@ -2,6 +2,7 @@ package com.example.shareyourfoodapp.utils;
 
 import android.content.Context;
 
+import com.example.shareyourfoodapp.model.Comment;
 import com.example.shareyourfoodapp.model.Recipe;
 import com.example.shareyourfoodapp.model.User;
 
@@ -181,8 +182,7 @@ public class MyDatabaseManager {
         mUser = new User("","");
     }
 
-    public static Boolean register(Connection c, String name, String email, String password)
-    {
+    public static Boolean register(Connection c, String name, String email, String password) {
         PreparedStatement ps = null;
         try {
             ps = c.prepareStatement("insert into User values(?,?,?)");
@@ -194,7 +194,6 @@ public class MyDatabaseManager {
             System.out.println("Error en la insercion.");
             return false;
         }
-
         mUser = new User(email, name);
 
         return true;
@@ -227,4 +226,59 @@ public class MyDatabaseManager {
         return recipes;
     }
 
+    public static ArrayList<Comment> getComments(Connection c, Integer idRecipe){
+        ArrayList<Comment> comments = new ArrayList<>();
+
+        PreparedStatement ps = null;
+        ResultSet rs=null;
+        try
+        {
+            ps = c.prepareStatement("select * from Comment where id_recipe = ?");
+            ps.setInt(1, idRecipe);
+
+            rs= ps.executeQuery();
+            while(rs.next()) {
+                Comment comment = new Comment(rs.getInt(1),
+                        rs.getString(2),
+                        rs.getInt(3),
+                        rs.getString(4));
+
+                comments.add(comment);
+            }
+            ps.close();
+        }catch(Exception e)  {
+            System.out.println("Error en la consulta.");
+        }
+
+        return comments;
+    }
+
+    public static Boolean addComment(Connection c, Integer idRecipe, String text) {
+        PreparedStatement ps = null;
+
+        ResultSet rs=null;
+        PreparedStatement ps2 = null;
+
+        try {
+            ps2 = c.prepareStatement("select COUNT(*) from Comment;");
+            rs = ps2.executeQuery();
+            Integer id = -1;
+            if(rs.next()){
+                id = rs.getInt(1)+1;
+            }
+            ps2.close();
+
+            ps = c.prepareStatement("insert into Comment values(?,?,?,?)");
+            ps.setInt(1, id);
+            ps.setString(2, mUser.getEmail());
+            ps.setInt(3, idRecipe);
+            ps.setString(4, text);
+            ps.executeUpdate();
+            ps.close();
+        }catch(Exception e) {
+            System.out.println("Error en la insercion.");
+            return false;
+        }
+        return true;
+    }
 }

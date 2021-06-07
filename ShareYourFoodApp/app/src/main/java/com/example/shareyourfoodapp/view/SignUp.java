@@ -3,7 +3,6 @@ package com.example.shareyourfoodapp.view;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.shareyourfoodapp.R;
 import com.example.shareyourfoodapp.controller.bll.AccountBll;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;

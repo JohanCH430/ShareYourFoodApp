@@ -184,7 +184,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             holder.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Go to Recipe
                     int pos = (int) v.getTag();
                     Recipe r = mRecipes.get(pos);
                     Intent i = new Intent(MainActivity.this, RecipeDetail.class);

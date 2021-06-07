@@ -9,7 +9,7 @@
 
     <EditText
         android:id="@+id/txtEmail"
-        android:layout_width="162dp"
+        android:layout_width="200dp"
         android:layout_height="45dp"
         android:ems="10"
         android:hint="@string/email"
@@ -20,7 +20,7 @@
 
     <EditText
         android:id="@+id/txtName"
-        android:layout_width="162dp"
+        android:layout_width="200dp"
         android:layout_height="45dp"
         android:ems="10"
         android:hint="@string/name"
@@ -31,7 +31,7 @@
 
     <EditText
         android:id="@+id/txtPassword"
-        android:layout_width="162dp"
+        android:layout_width="200dp"
         android:layout_height="45dp"
         android:ems="10"
         android:hint="@string/password"
@@ -43,7 +43,7 @@
 
     <EditText
         android:id="@+id/txtRepeatPassword"
-        android:layout_width="162dp"
+        android:layout_width="200dp"
         android:layout_height="45dp"
         android:ems="10"
         android:hint="@string/repeat_password"
@@ -65,13 +65,12 @@
 
     <Button
         android:id="@+id/btnSignUp"
-        android:layout_width="162dp"
+        android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:text="Registrarme"
         android:layout_below="@+id/txtRepeatPassword"
         android:layout_centerInParent="true"
         android:layout_marginTop="50dp"/>
-
 
 
 </RelativeLayout>
