@@ -10,4 +10,13 @@ public class RecipeDal {
     public static ArrayList<Recipe> getRecipes(Context context){
         return MyDatabaseManager.getRecipes(MyDatabaseManager.myConnection(context));
     }
+
+    public static ArrayList<Recipe> getMyRecipes(Context context){
+        return MyDatabaseManager.getMyRecipes(MyDatabaseManager.myConnection(context));
+    }
+
+    public static ArrayList<Recipe> getRecipeSearch(Context context, String txt){
+        return MyDatabaseManager.getRecipeSearch(MyDatabaseManager.myConnection(context), txt);
+
+    }
 }

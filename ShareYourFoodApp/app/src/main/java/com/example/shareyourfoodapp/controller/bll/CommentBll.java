@@ -15,4 +15,8 @@ public class CommentBll {
         return CommentDal.addComment(context, idRecipe, text);
     }
 
+    public static Boolean deleteComment(Context context, Integer idComment) {
+        return CommentDal.deleteComment(context, idComment);
+    }
+
 }

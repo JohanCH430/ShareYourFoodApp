@@ -15,4 +15,8 @@ public class CommentDal {
         return MyDatabaseManager.addComment(MyDatabaseManager.myConnection(context), idRecipe, text);
     }
 
+    public static Boolean deleteComment(Context context, Integer idComment) {
+        return MyDatabaseManager.deleteComment(MyDatabaseManager.myConnection(context), idComment);
+    }
+
 }

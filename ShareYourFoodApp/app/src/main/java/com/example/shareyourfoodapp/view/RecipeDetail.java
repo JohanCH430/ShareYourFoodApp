@@ -19,10 +19,10 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.shareyourfoodapp.R;
+import com.example.shareyourfoodapp.controller.bll.AccountBll;
 import com.example.shareyourfoodapp.controller.bll.CommentBll;
 import com.example.shareyourfoodapp.model.Comment;
 import com.example.shareyourfoodapp.model.Recipe;
-
 import java.util.ArrayList;
 
 public class RecipeDetail extends AppCompatActivity {
@@ -51,7 +51,7 @@ public class RecipeDetail extends AppCompatActivity {
 
         Glide.with(RecipeDetail.this)
                 .load(mRecipe.getImage_url())
-                .apply(new RequestOptions().placeholder(R.drawable.example_recipe).error(R.drawable.example_recipe))
+                .apply(new RequestOptions().placeholder(R.drawable.empty_image).error(R.drawable.empty_image))
                 .into(img);
 
         txtTitle.setText(mRecipe.getTitle());
@@ -156,6 +156,51 @@ public class RecipeDetail extends AppCompatActivity {
         }
     }
 
+    private class DeleteCommentsTask extends AsyncTask<Void, Void, Exception> {
+        ProgressDialog dialog;
+        Integer idComment;
+
+        private Boolean removed;
+
+        public DeleteCommentsTask(Integer idComment) {
+            this.idComment = idComment;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            dialog = new ProgressDialog(RecipeDetail.this);
+            dialog.show();
+            dialog.setCancelable(false);
+            dialog.setMessage("Cargando...");
+        }
+
+        @Override
+        protected Exception doInBackground(Void... params) {
+            try {
+                removed = CommentBll.deleteComment(RecipeDetail.this, idComment);
+                return null;
+            } catch (Exception e) {
+                return e;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(final Exception ex) {
+            dialog.dismiss();
+            if (ex == null) {
+                if(removed){
+                    new GetCommentsTask().execute();
+                }
+                else{
+                    Toast.makeText(RecipeDetail.this, "Ha ocurrido un error...", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+            else
+                Toast.makeText(RecipeDetail.this, "Ha ocurrido un error...", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private class GetCommentsTask extends AsyncTask<Void, Void, Exception> {
         ProgressDialog dialog;
 
@@ -202,12 +247,16 @@ public class RecipeDetail extends AppCompatActivity {
 
     static class CommentViewHolder {
         TextView txtAuthor, txtText;
+        Button btnDelete;
     }
 
     class AdapterComments extends ArrayAdapter {
 
+        private String userEmail;
+
         public AdapterComments(Context context) {
             super(context, R.layout.adapter_comment_row);
+            userEmail = AccountBll.getEmailUser();
         }
 
         @Override
@@ -226,6 +275,7 @@ public class RecipeDetail extends AppCompatActivity {
                 holder = new CommentViewHolder();
                 holder.txtAuthor = item.findViewById(R.id.txtAuthor);
                 holder.txtText = item.findViewById(R.id.txtText);
+                holder.btnDelete = item.findViewById(R.id.btnDelete);
                 item.setTag(holder);
             }
             else {
@@ -235,6 +285,24 @@ public class RecipeDetail extends AppCompatActivity {
             Comment comment = mComments.get(position);
             holder.txtAuthor.setText(comment.getAuthor_mail());
             holder.txtText.setText(comment.getText());
+
+            holder.btnDelete.setTag(position);
+
+            if(comment.getAuthor_mail().equals(userEmail)){
+                holder.btnDelete.setVisibility(View.VISIBLE);
+                holder.btnDelete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int pos = (int) v.getTag();
+                        Comment c = mComments.get(pos);
+                        new DeleteCommentsTask(c.getId()).execute();
+                    }
+                });
+
+            }
+            else{
+                holder.btnDelete.setVisibility(View.GONE);
+            }
 
             return (item);
         }

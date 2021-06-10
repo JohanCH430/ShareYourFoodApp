@@ -3,27 +3,24 @@ package com.example.shareyourfoodapp.view;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.example.shareyourfoodapp.R;
 import com.example.shareyourfoodapp.controller.bll.AccountBll;
 import com.example.shareyourfoodapp.controller.bll.RecipeBll;
 import com.example.shareyourfoodapp.model.Recipe;
 import com.google.android.material.navigation.NavigationView;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +32,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private ListView recipeList;
     private ArrayList<Recipe> mRecipes;
+
+    TextView name, email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,13 +55,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        TextView name = navigationView.getHeaderView(0).findViewById(R.id.name);
-        TextView email = navigationView.getHeaderView(0).findViewById(R.id.email);
-        name.setText(AccountBll.getNameUser(MainActivity.this));
-        email.setText(AccountBll.getEmailUser(MainActivity.this));
+        name = navigationView.getHeaderView(0).findViewById(R.id.name);
+        email = navigationView.getHeaderView(0).findViewById(R.id.email);
 
         recipeList = findViewById(R.id.recipeList);
         new GetRecipesTask().execute();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        name.setText(AccountBll.getNameUser());
+        email.setText(AccountBll.getEmailUser());
     }
 
     @Override
@@ -73,7 +77,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(new Intent(this, MyAccount.class));
                 break;
 
-                case R.id.nav_favorites:
+            case R.id.nav_my_recipes:
+                startActivity(new Intent(this, MyRecipes.class));
+                break;
+
+            case R.id.nav_favorites:
                 startActivity(new Intent(this, Favorites.class));
                 break;
 
@@ -90,8 +98,62 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.search, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.btnSearch) {
+            recipeSearch();
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void recipeSearch() {
+        LayoutInflater li = LayoutInflater.from(this);
+        View promptsView = li.inflate(R.layout.ad_recipe_search, null);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle("Buscar receta");
+        alertDialogBuilder.setView(promptsView);
+
+        EditText txtSearch = promptsView.findViewById(R.id.txtSearch);
+
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("Buscar",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                            }
+                        }
+                )
+                .setNegativeButton("Cancelar",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String text = txtSearch.getText().toString().trim();
+                if(text.equals("")){
+                    txtSearch.setError("Introduce el nombre de la receta");
+                }else{
+                    alertDialog.dismiss();
+                    Intent intent = new Intent(MainActivity.this, RecipeSearch.class);
+                    intent.putExtra("txtSearch", text);
+                    startActivity(intent);
+                }
+            }
+        });
     }
 
 
@@ -123,78 +185,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         protected void onPostExecute(final Exception ex) {
             dialog.dismiss();
             if (ex == null) {
-                AdapterRecipes adapter = new AdapterRecipes(MainActivity.this);
+                AdapterRecipes adapter = new AdapterRecipes(MainActivity.this, mRecipes);
                 recipeList.setAdapter(adapter);
             }
             else
                 Toast.makeText(MainActivity.this, "Ha ocurrido un error...", Toast.LENGTH_SHORT).show();
         }
     }
-
-
-
-    static class ViewHolder {
-        CardView cardView;
-        TextView txtTitle;
-        ImageView img;
-    }
-
-    class AdapterRecipes extends ArrayAdapter {
-
-        public AdapterRecipes(Context context) {
-            super(context, R.layout.adapter_recipe_row);
-        }
-
-        @Override
-        public int getCount() {
-            return mRecipes.size();
-        }
-
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View item = convertView;
-            final ViewHolder holder;
-
-            if (item == null) {
-                LayoutInflater inflater = LayoutInflater.from(getContext());
-                item = inflater.inflate(R.layout.adapter_recipe_row, null);
-
-                holder = new ViewHolder();
-                holder.cardView = item.findViewById(R.id.cardView);
-                holder.img = item.findViewById(R.id.img);
-                holder.txtTitle = item.findViewById(R.id.txtTitle);
-
-                holder.img.setImageDrawable(null);
-                item.setTag(holder);
-            }
-            else {
-                holder = (ViewHolder) convertView.getTag();
-            }
-
-            holder.img.setImageDrawable(null);
-            Recipe recipe = mRecipes.get(position);
-
-            holder.txtTitle.setText(recipe.getTitle());
-            holder.cardView.setTag(position);
-
-            Glide.with(MainActivity.this)
-                    .load(recipe.getImage_url())
-                    .apply(new RequestOptions().placeholder(R.drawable.example_recipe).error(R.drawable.example_recipe))
-                    .into(holder.img);
-
-            holder.cardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int pos = (int) v.getTag();
-                    Recipe r = mRecipes.get(pos);
-                    Intent i = new Intent(MainActivity.this, RecipeDetail.class);
-                    i.putExtra("Recipe", r);
-                    startActivity(i);
-                }
-            });
-
-            return (item);
-        }
-    }
-
 
 }

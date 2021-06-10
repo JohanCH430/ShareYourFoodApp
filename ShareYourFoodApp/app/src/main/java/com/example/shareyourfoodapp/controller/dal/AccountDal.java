@@ -17,13 +17,27 @@ public class AccountDal {
         return MyDatabaseManager.register(MyDatabaseManager.myConnection(context), name, email, password);
     }
 
-    public static String getNameUser(Context context){
+    public static String getNameUser(){
         return MyDatabaseManager.mUser.getName();
     }
 
-    public static String getEmailUser(Context context){
+    public static String getEmailUser(){
         return MyDatabaseManager.mUser.getEmail();
     }
+
+    public static String getPasswordUser(){
+        return MyDatabaseManager.mUser.getPassword();
+    }
+
+
+    public static Boolean changeName(Context context, String newName){
+        return MyDatabaseManager.changeName(MyDatabaseManager.myConnection(context), newName);
+    }
+
+    public static Boolean changePassword(Context context, String password, String newPassword) {
+        return MyDatabaseManager.changePassword(MyDatabaseManager.myConnection(context), password, newPassword);
+    }
+
 
 }
 

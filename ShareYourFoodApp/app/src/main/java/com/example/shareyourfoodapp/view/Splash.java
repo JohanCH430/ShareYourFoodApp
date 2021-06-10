@@ -21,7 +21,7 @@ public class Splash extends AppCompatActivity {
             public void run() {
                 startActivity(new Intent(Splash.this, SignIn.class));
             }
-        },5000);
+        },4000);
     }
 
 }

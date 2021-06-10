@@ -11,4 +11,12 @@ public class RecipeBll {
         return RecipeDal.getRecipes(context);
     }
 
+    public static ArrayList<Recipe> getMyRecipes(Context context){
+        return RecipeDal.getMyRecipes(context);
+    }
+
+    public static ArrayList<Recipe> getRecipeSearch(Context context, String txt){
+        return RecipeDal.getRecipeSearch(context, txt);
+    }
+
 }

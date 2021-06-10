@@ -17,12 +17,24 @@ public class AccountBll {
         return AccountDal.register(context, name, email, password);
     }
 
-    public static String getNameUser(Context context){
-        return AccountDal.getNameUser(context);
+    public static String getNameUser(){
+        return AccountDal.getNameUser();
     }
 
-    public static String getEmailUser(Context context){
-        return AccountDal.getEmailUser(context);
+    public static String getEmailUser(){
+        return AccountDal.getEmailUser();
+    }
+
+    public static String getPasswordUser(){
+        return AccountDal.getPasswordUser();
+    }
+
+    public static Boolean changeName(Context context, String newName){
+        return AccountDal.changeName(context, newName);
+    }
+
+    public static Boolean changePassword(Context context, String password, String newPassword) {
+        return AccountDal.changePassword(context, password, newPassword);
     }
 
 }
